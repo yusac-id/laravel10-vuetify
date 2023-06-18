@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getCurrentInstance, inject, onMounted, ref } from 'vue';
+import { computed, getCurrentInstance, inject, onMounted, ref } from 'vue';
 import LoadingIndicator from '../components/LoadingIndicator.vue';
 import { useLoadingStore } from '../store/loading.store';
 import Snackbar from '../components/Snackbar.vue';
@@ -16,8 +16,8 @@ onMounted(() => {
 
 <template>
     <router-view />
-    <LoadingIndicator :loading="loadingStore.loading"></LoadingIndicator>
-    <Snackbar :show="snackbarStore.status" :text="snackbarStore.text"
-        :timeout="snackbarStore.duration" v-on:close="snackbarStore.update($event)"></Snackbar>
+    <LoadingIndicator :loading="loadingStore.loading"></LoadingIndicator>    
+    <Snackbar v-model="snackbarStore.status" :type="snackbarStore.type" :text="snackbarStore.message" :timeout="snackbarStore.duration"
+        @update:model-value="snackbarStore.update($event)"></Snackbar>
 </template>
 

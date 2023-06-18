@@ -30,25 +30,23 @@ const snackStore = useSnackbarStore()
 const { httpPost, httpError } = useHttp()
 
 onMounted(() => {
-    setTimeout(() => {
-        authStore.login()
-        console.log(authStore.status)
-    }, 2000)
 
 })
 
-const login = async () => {
-    console.log()
+const login = async () => {    
     try {
         loadingStore.start()
-        const res = await httpPost('auth/login', { username: loginForm.username, password: loginForm.password })
+        const res: any = await httpPost('auth/login', { username: loginForm.username, password: loginForm.password })
+        console.log(res);
+        if (res.token) {
+            authStore.login(res.token, res.user);
+        }
         // console.log(res)
         loadingStore.stop()
     } catch (e) {
-        const error:any = httpError(e)
+        const error: any = httpError(e)
         loadingStore.stop()
-        console.log(error.message)
-        snackStore.show(error.message)
+        snackStore.show(error.message, 'warning')
     }
 
 }

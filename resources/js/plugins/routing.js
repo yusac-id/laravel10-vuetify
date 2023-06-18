@@ -1,11 +1,22 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useAuthStore } from "../store/auth.store";
 
 const routes = [
     {
-        path: "/home",
-        name: "home",
-        component: () =>
-            import(/* webpackChunkName: "home" */ "../pages/Home.vue"),
+        path: "/",
+        component: () => import("../layout/MainLayout.vue"),
+        children: [
+            {
+                path: "",
+                redirect: "home",
+            },
+            {
+                path: "/home",
+                name: "home",
+                component: () =>
+                    import(/* webpackChunkName: "home" */ "../pages/Home.vue"),
+            },
+        ],
     },
     {
         path: "/login",
@@ -19,6 +30,23 @@ const router = createRouter({
     base: "/app/",
     history: createWebHistory("/app/"),
     routes,
+});
+
+router.beforeEach(async (to) => {    
+    // redirect to login page if not logged in and trying to access a restricted page
+    const publicPages = ["/login"];
+    const authRequired = !publicPages.includes(to.path);
+    const authStore = useAuthStore();
+    console.log(authStore.getToken)
+
+    if (authRequired && !authStore.status) {
+        auth.returnUrl = to.fullPath;
+        return "/login";
+    }
+
+    if (to.path === "/login" && authStore.status) {
+        return "/";
+    }
 });
 
 export default router;
