@@ -6,6 +6,7 @@ import { useVuelidate } from '@vuelidate/core'
 import { useHttp } from '../composables/http';
 import { useLoadingStore } from '../store/loading.store';
 import { useSnackbarStore } from '../store/snackbar.store';
+import { useRouter } from 'vue-router';
 
 const hello: string = "Hello"
 const authStore = useAuthStore()
@@ -26,20 +27,21 @@ const v$ = useVuelidate(loginRules, loginForm)
 
 const loadingStore = useLoadingStore()
 const snackStore = useSnackbarStore()
-
+const router = useRouter()
 const { httpPost, httpError } = useHttp()
 
 onMounted(() => {
 
 })
 
-const login = async () => {    
+const login = async () => {
     try {
         loadingStore.start()
         const res: any = await httpPost('auth/login', { username: loginForm.username, password: loginForm.password })
         console.log(res);
         if (res.token) {
             authStore.login(res.token, res.user);
+            router.replace('/home');
         }
         // console.log(res)
         loadingStore.stop()

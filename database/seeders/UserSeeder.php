@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
                 'role' => 'owner',
                 'type' => 'admin',
                 'username' => 'admin',
-                'password' => '13578642',
+                'password' => '12345678',
                 'name' => 'Administrator',
                 'email' => ''
             ]);
