@@ -15,6 +15,7 @@ const routes = [
                 name: "home",
                 component: () =>
                     import(/* webpackChunkName: "home" */ "../pages/Home.vue"),
+
             },
         ],
     },
@@ -36,11 +37,10 @@ router.beforeEach(async (to) => {
     // redirect to login page if not logged in and trying to access a restricted page
     const publicPages = ["/login"];
     const authRequired = !publicPages.includes(to.path);
-    const authStore = useAuthStore();
-    console.log(authStore.getToken)
+    const authStore = useAuthStore();    
 
     if (authRequired && !authStore.status) {
-        auth.returnUrl = to.fullPath;
+        authStore.returnUrl = to.fullPath;                
         return "/login";
     }
 

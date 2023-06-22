@@ -41,7 +41,11 @@ const login = async () => {
         console.log(res);
         if (res.token) {
             authStore.login(res.token, res.user);
-            router.replace('/home');
+            if (authStore.returnUrl && authStore.returnUrl !== '') {
+                router.replace(authStore.returnUrl)
+            } else {
+                router.replace('/home');
+            }
         }
         // console.log(res)
         loadingStore.stop()

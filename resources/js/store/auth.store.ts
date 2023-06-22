@@ -2,9 +2,12 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { UserInterface, UserModel } from "../models/user.model";
 import { useStorage } from "../composables/storage";
+import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("auth", () => {
     const { saveData, getData, clearData } = useStorage();
+
+    const router = useRouter()
 
     const token = getData("token")
         ? ref<string>(getData("token"))
@@ -13,8 +16,9 @@ export const useAuthStore = defineStore("auth", () => {
         ? ref<UserModel>(getData("user"))
         : ref<UserModel>({} as UserModel);
     const loggedIn = ref<boolean>(token.value ? true : false);
+    const returnUrl = ref<string>('')
 
-    const status = computed((): boolean => loggedIn.value);
+    const status = computed((): boolean => loggedIn.value);    
 
     function init() {
         const tokenData = getData("token");
@@ -39,15 +43,18 @@ export const useAuthStore = defineStore("auth", () => {
         token.value = "";
         user.value = <UserModel>{};
         clearData();
+        router.replace('/login');
     }
 
     const getUser = computed((): UserModel => user.value!);
     const getToken = computed((): string => token.value!);
+    
 
     return {
         status,
         getUser,
         getToken,
+        returnUrl,        
         login,
         logout,
     };
