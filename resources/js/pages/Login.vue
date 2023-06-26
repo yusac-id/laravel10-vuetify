@@ -8,7 +8,6 @@ import { useLoadingStore } from '../store/loading.store';
 import { useSnackbarStore } from '../store/snackbar.store';
 import { useRouter } from 'vue-router';
 
-const hello: string = "Hello"
 const authStore = useAuthStore()
 
 const inititalStateLogin = {
@@ -37,8 +36,7 @@ onMounted(() => {
 const login = async () => {
     try {
         loadingStore.start()
-        const res: any = await httpPost('auth/login', { username: loginForm.username, password: loginForm.password })
-        console.log(res);
+        const res: any = await httpPost('auth/login', { username: loginForm.username, password: loginForm.password })        
         if (res.token) {
             authStore.login(res.token, res.user);
             if (authStore.returnUrl && authStore.returnUrl !== '') {
@@ -46,8 +44,7 @@ const login = async () => {
             } else {
                 router.replace('/home');
             }
-        }
-        // console.log(res)
+        }        
         loadingStore.stop()
     } catch (e) {
         const error: any = httpError(e)

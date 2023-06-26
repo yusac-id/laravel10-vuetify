@@ -4,7 +4,7 @@ import { UserInterface, UserModel } from "../models/user.model";
 import { useStorage } from "../composables/storage";
 import { useRouter } from "vue-router";
 
-export const useAuthStore = defineStore("auth", () => {
+export const useAuthStore = defineStore("authStore", () => {
     const { saveData, getData, clearData } = useStorage();
 
     const router = useRouter()
@@ -19,16 +19,6 @@ export const useAuthStore = defineStore("auth", () => {
     const returnUrl = ref<string>('')
 
     const status = computed((): boolean => loggedIn.value);    
-
-    function init() {
-        const tokenData = getData("token");
-        const userData = getData("user");
-        if (!tokenData && !userData) {
-            login(tokenData, userData);
-        }
-    }
-
-    // init();
 
     function login(tokenData: string, userData: UserInterface) {
         loggedIn.value = true;
@@ -48,7 +38,6 @@ export const useAuthStore = defineStore("auth", () => {
 
     const getUser = computed((): UserModel => user.value!);
     const getToken = computed((): string => token.value!);
-    
 
     return {
         status,

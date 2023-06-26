@@ -8,22 +8,33 @@ const routes = [
         children: [
             {
                 path: "",
-                redirect: "home",
+                redirect: "dashboard",
             },
             {
                 path: "/home",
                 name: "home",
-                component: () =>
-                    import(/* webpackChunkName: "home" */ "../pages/Home.vue"),
-
+                component: () => import("../pages/Home.vue"),
+            },
+            {
+                path: "/dashboard",
+                name: "dashboard",
+                component: () => import("../pages/Dashboard.vue"),
+            },
+            {
+                path: "/profile",
+                name: "profile",
+                component: () => import("../pages/Profile.vue"),
             },
         ],
     },
     {
         path: "/login",
         name: "login",
-        component: () =>
-            import(/* webpackChunkName: "login" */ "../pages/Login.vue"),
+        component: () => import("../pages/Login.vue"),
+    },
+    {
+        path: "/:catchAll(.*)*",
+        component: () => import("../pages/ErrorNotFound.vue"),
     },
 ];
 
@@ -33,14 +44,14 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach(async (to) => {    
+router.beforeEach(async (to) => {
     // redirect to login page if not logged in and trying to access a restricted page
     const publicPages = ["/login"];
     const authRequired = !publicPages.includes(to.path);
-    const authStore = useAuthStore();    
+    const authStore = useAuthStore();
 
     if (authRequired && !authStore.status) {
-        authStore.returnUrl = to.fullPath;                
+        authStore.returnUrl = to.fullPath;
         return "/login";
     }
 

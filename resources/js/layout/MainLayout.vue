@@ -5,8 +5,7 @@ import { ref } from 'vue';
 
 const drawer = ref<boolean>(false)
 
-const toogleDrawer = () =>{
-    console.log(drawer.value)
+const toogleDrawer = () =>{    
     drawer.value = !drawer.value
 }
 
@@ -16,7 +15,7 @@ const toogleDrawer = () =>{
         <v-layout>
             <NavigationDrawer v-model="drawer"></NavigationDrawer>
             <AppBar @open-drawer="toogleDrawer()"></AppBar>
-            <v-main class="main-container">
+            <v-main class="main-container bg-grey-lighten-5">
                 <v-container fluid>
                     <RouterView></RouterView>
                 </v-container>

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
-export const useSnackbarStore = defineStore("snackbar", () => {
+export const useSnackbarStore = defineStore("snackbarStore", () => {
     const text = ref<string>("");
     const status = ref<boolean>(false);
     const timeout = ref<number>(2000);
