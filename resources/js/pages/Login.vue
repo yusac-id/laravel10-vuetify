@@ -2,11 +2,16 @@
 import { ref, onMounted, reactive } from 'vue';
 import { useAuthStore } from '../store/auth.store'
 import { email, required, helpers } from '@vuelidate/validators'
-import { useVuelidate } from '@vuelidate/core'
 import { useHttp } from '../composables/http';
 import { useLoadingStore } from '../store/loading.store';
 import { useSnackbarStore } from '../store/snackbar.store';
 import { useRouter } from 'vue-router';
+import useVuelidate from '@vuelidate/core';
+
+defineOptions({
+    name: "LoginPage",
+    inheritAttrs: false,    
+})
 
 const authStore = useAuthStore()
 
@@ -68,13 +73,13 @@ const login = async () => {
                         <div class="text-caption">ver 1.0.1</div>
                     </v-card-subtitle>
                     <v-card-text class="login-form">
-                        <v-text-field color="primary" v-model="loginForm.username" variant="outlined"
+                        <v-text-field color="primary" type="text" v-model="loginForm.username" variant="outlined"
                             :error-messages="v$.username.$errors.map(e => e.$message.toString())" label="Username" required
-                            @input="v$.username.$touch" @blur="v$.username.$touch">
+                            @input="v$.username.$touch" @blur="v$.username.$touch" test-id="login-username" id="username">
                         </v-text-field>
                         <v-text-field color="primary" v-model="loginForm.password" variant="outlined"
                             :error-messages="v$.password.$errors.map(e => e.$message.toString())" label="Password" required
-                            @input="v$.password.$touch" @blur="v$.password.$touch" type="password">
+                            @input="v$.password.$touch" @blur="v$.password.$touch" type="password" test-id="login-password" id="password">
                         </v-text-field>
 
                     </v-card-text>
